@@ -10,6 +10,7 @@ const Episode = ({ episode, anime }) => {
     >
       <Button
         variant="outlined"
+        size="large"
         sx={{ justifyContent: "flex-start" }}
         fullWidth
       >

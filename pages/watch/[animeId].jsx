@@ -34,7 +34,7 @@ const DetailPage = ({ anime }) => {
       <Container maxWidth="md" disableGutters>
         <Box px={2} py={4}>
           <Typography variant="h4" mb={1}>
-            {anime.title?.english ? anime.title.english : anime.title.native}
+            {anime.title.english ? anime.title.english : anime.title.native}
           </Typography>
           <Typography variant="subtitle1" mb={1}>
             Release date {anime?.releaseDate} | Total episodes{" "}
