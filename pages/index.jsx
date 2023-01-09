@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Anime from "../components/Anime";
 import { getAnimes } from "../lib/animes";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export const getStaticProps = async () => {
   const animes = await getAnimes();
@@ -20,17 +21,21 @@ export default function Home({ animes }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>Home page</h1>
-        <section>
-          <h2>Trending Animes</h2>
-          <div>
+
+      <Container maxWidth="xl">
+        <Box py={2}>
+          <Typography variant="h5" mb={2}>
+            Trending Animes
+          </Typography>
+          <Grid container spacing={2}>
             {animes?.map((anime) => (
-              <Anime key={anime.id} anime={anime} />
+              <Grid item key={anime.id} xs={6} sm={3} md={2}>
+                <Anime anime={anime} />
+              </Grid>
             ))}
-          </div>
-        </section>
-      </main>
+          </Grid>
+        </Box>
+      </Container>
     </>
   );
 }

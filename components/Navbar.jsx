@@ -1,11 +1,19 @@
+import { CatchingPokemon } from "@mui/icons-material";
+import { AppBar, Button, Container, Toolbar } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
   return (
-    <nav>
-      <Link href="/">Home</Link>
-    </nav>
+    <AppBar position="sticky">
+      <Container maxWidth="xl" disableGutters>
+        <Toolbar>
+          <Button color="light" startIcon={<CatchingPokemon />} size="large">
+            <Link href="/">PokeTv</Link>
+          </Button>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 
