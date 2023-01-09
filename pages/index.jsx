@@ -1,20 +1,17 @@
 import Anime from "../components/Anime";
-import { getAnimes, getPopAnimes } from "../lib/animes";
 import { Box, Container, Grid, Typography } from "@mui/material";
+import useSWR from "swr";
 
-export const getStaticProps = async () => {
-  const animes = await getAnimes();
-  const popAnimes = await getPopAnimes();
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  return {
-    props: {
-      animes,
-      popAnimes,
-    },
-  };
-};
+export default function Home() {
+  const { data, error, isLoading } = useSWR(
+    "https://api.consumet.org/meta/anilist/trending?perPage=40",
+    fetcher
+  );
 
-export default function Home({ animes, popAnimes }) {
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
   return (
     <Container maxWidth="lg">
       <Box py={2}>
@@ -22,7 +19,7 @@ export default function Home({ animes, popAnimes }) {
           Trending Animes
         </Typography>
         <Grid container spacing={2}>
-          {animes?.map((anime) => (
+          {data.results.map((anime) => (
             <Grid item key={anime.id} xs={6} sm={3} md={2}>
               <Anime anime={anime} />
             </Grid>
@@ -30,7 +27,7 @@ export default function Home({ animes, popAnimes }) {
         </Grid>
       </Box>
 
-      <Box py={2}>
+      {/* <Box py={2}>
         <Typography variant="h5" mb={2}>
           Popular Animes
         </Typography>
@@ -41,7 +38,7 @@ export default function Home({ animes, popAnimes }) {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Box> */}
     </Container>
   );
 }

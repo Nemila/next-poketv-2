@@ -2,27 +2,29 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import Player from "../../../components/Player";
 import Episode from "../../../components/Episode";
-import { getAnimeDetails, getEpisode } from "../../../lib/animes";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import useSWR from "swr";
 
-export const getServerSideProps = async (context) => {
-  const animeId = context.params.animeId;
-  const episodeId = context.params.episodeId;
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const anime = await getAnimeDetails(animeId);
-  const episode = await getEpisode(episodeId);
-
-  return {
-    props: {
-      anime,
-      episode,
-    },
-  };
-};
-
-const StreamPage = ({ anime, episode }) => {
+const StreamPage = ({}) => {
   const router = useRouter();
-  const { episodeId } = router.query;
+  const { episodeId, animeId } = router.query;
+  const {
+    data: anime,
+    error,
+    isLoading,
+  } = useSWR(`https://api.consumet.org/meta/anilist/info/${animeId}`, fetcher);
+
+  const {
+    data: episode,
+    error: episodeErr,
+    isLoading: episodeIsLoading,
+  } = useSWR(
+    `https://api.consumet.org/meta/anilist/watch/${episodeId}`,
+    fetcher
+  );
+
   const currentEpisode = anime.episodes.find(
     (episode) => episode.id === episodeId
   );
@@ -32,10 +34,13 @@ const StreamPage = ({ anime, episode }) => {
     if (desc && anime) desc.current.innerHTML = anime.description;
   }, [desc, anime]);
 
+  if (error || episodeErr) return <div>failed to load</div>;
+  if (isLoading || episodeIsLoading) return <div>loading...</div>;
+
   return (
     <Container maxWidth="md">
       <Box py={2}>
-        <Player sources={episode?.sources} />
+        <Player sources={episode.sources} />
 
         <Typography variant="h5" my={2}>
           Epsiode {currentEpisode.number}: {currentEpisode.title}
