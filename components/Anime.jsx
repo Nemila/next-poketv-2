@@ -1,25 +1,13 @@
 import {
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Paper,
-  Stack,
   Typography,
-  styled,
 } from "@mui/material";
-import { height } from "@mui/system";
-import Image from "next/image";
+
 import Link from "next/link";
 import React from "react";
-
-const StyledImage = styled(Image)(({ theme }) => ({
-  aspectRatio: "9 / 16",
-  objectFit: "cover",
-  objectPosition: "center",
-}));
 
 const Anime = ({ anime }) => {
   const { id, title, image, totalEpisodes } = anime;

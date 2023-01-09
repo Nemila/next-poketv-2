@@ -8,9 +8,11 @@ const Navbar = () => {
     <AppBar position="sticky">
       <Container maxWidth="lg" disableGutters>
         <Toolbar>
-          <Button color="light" startIcon={<CatchingPokemon />} size="large">
-            <Link href="/">PokeTv</Link>
-          </Button>
+          <Link href="/">
+            <Button color="light" startIcon={<CatchingPokemon />} size="large">
+              PokeTv
+            </Button>
+          </Link>
         </Toolbar>
       </Container>
     </AppBar>
