@@ -5,7 +5,13 @@ const Player = ({ sources }) => {
   return (
     <Media>
       <Hls controls>
-        <video preload="none" data-video="0" controls>
+        <video
+          preload="none"
+          data-video="0"
+          width="100%"
+          height="100%"
+          controls
+        >
           {sources.map((source) => (
             <source key={source.url} src={source.url} />
           ))}

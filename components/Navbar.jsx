@@ -6,7 +6,7 @@ import React from "react";
 const Navbar = () => {
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl" disableGutters>
+      <Container maxWidth="lg" disableGutters>
         <Toolbar>
           <Button color="light" startIcon={<CatchingPokemon />} size="large">
             <Link href="/">PokeTv</Link>
