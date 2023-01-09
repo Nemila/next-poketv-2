@@ -26,10 +26,6 @@ const StreamPage = () => {
     fetcher
   );
 
-  const currentEpisode = anime.episodes.find(
-    (episode) => episode.id === episodeId
-  );
-
   if (error || episodeErr) return <div>failed to load</div>;
   if (isLoading || episodeIsLoading) return <div>loading...</div>;
 
@@ -39,7 +35,11 @@ const StreamPage = () => {
         <Player sources={episode.sources} />
 
         <Typography variant="h5" my={2}>
-          Epsiode {currentEpisode.number}: {currentEpisode.title}
+          Epsiode{" "}
+          {
+            anime.episodes.find((itemEpisode) => itemEpisode.id === episodeId)
+              .number
+          }
         </Typography>
 
         <Typography variant="body2">{anime.description}</Typography>
