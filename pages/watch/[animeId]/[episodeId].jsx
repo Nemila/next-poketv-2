@@ -7,9 +7,12 @@ import useSWR from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const StreamPage = ({}) => {
+const StreamPage = () => {
+  const desc = useRef(null);
+
   const router = useRouter();
   const { episodeId, animeId } = router.query;
+
   const {
     data: anime,
     error,
@@ -29,7 +32,6 @@ const StreamPage = ({}) => {
     (episode) => episode.id === episodeId
   );
 
-  const desc = useRef(null);
   useEffect(() => {
     if (desc && anime) desc.current.innerHTML = anime.description;
   }, [desc, anime]);
@@ -46,14 +48,13 @@ const StreamPage = ({}) => {
           Epsiode {currentEpisode.number}: {currentEpisode.title}
         </Typography>
 
-        <Typography variant="body2" ref={desc}>
-          {currentEpisode.description}
-        </Typography>
+        <Typography variant="body2" ref={desc}></Typography>
 
         <Stack spacing={1} mt={2}>
           <Typography variant="h6">All episodes</Typography>
-          {anime?.episodes.map((episode) => (
-            <Episode key={episode.id} anime={anime} episode={episode} />
+
+          {anime.episodes.map((itemEpisode) => (
+            <Episode key={itemEpisode.id} anime={anime} episode={itemEpisode} />
           ))}
         </Stack>
       </Box>

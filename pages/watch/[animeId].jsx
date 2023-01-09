@@ -1,12 +1,14 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Episode from "../../components/Episode";
 import useSWR from "swr";
-import { useRouter } from "next/router";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const DetailPage = ({}) => {
+const DetailPage = () => {
+  const desc = useRef(null);
+
   const router = useRouter();
   const { animeId } = router.query;
 
@@ -16,7 +18,6 @@ const DetailPage = ({}) => {
     isLoading,
   } = useSWR(`https://api.consumet.org/meta/anilist/info/${animeId}`, fetcher);
 
-  const desc = useRef(null);
   useEffect(() => {
     if (desc && anime) desc.current.innerHTML = anime.description;
   }, [desc, anime]);
@@ -41,18 +42,23 @@ const DetailPage = ({}) => {
           <Typography variant="h4" mb={1}>
             {anime.title.english ? anime.title.english : anime.title.native}
           </Typography>
+
           <Typography variant="subtitle1" mb={1}>
             Release date {anime.releaseDate} | Total episodes{" "}
             {anime.totalEpisodes}
           </Typography>
-          <Typography variant="body2" ref={desc}>
-            {anime.description}
-          </Typography>
+
+          <Typography variant="body2" ref={desc}></Typography>
 
           <Stack spacing={1} mt={2}>
             <Typography variant="h6">All episodes</Typography>
-            {anime.episodes.map((episode) => (
-              <Episode key={episode.id} anime={anime} episode={episode} />
+
+            {anime.episodes.map((itemEpisode) => (
+              <Episode
+                key={itemEpisode.id}
+                anime={anime}
+                episode={itemEpisode}
+              />
             ))}
           </Stack>
         </Box>

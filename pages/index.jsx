@@ -10,14 +10,25 @@ export default function Home() {
     fetcher
   );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  const {
+    data: popAnimes,
+    error: popAnimesErr,
+    isLoading: popAnimesIsLoading,
+  } = useSWR(
+    "https://api.consumet.org/meta/anilist/popular?perPage=40",
+    fetcher
+  );
+
+  if (error || popAnimesErr) return <div>failed to load</div>;
+  if (isLoading || popAnimesIsLoading) return <div>loading...</div>;
+
   return (
     <Container maxWidth="lg">
       <Box py={2}>
         <Typography variant="h5" mb={2}>
           Trending Animes
         </Typography>
+
         <Grid container spacing={2}>
           {data.results.map((anime) => (
             <Grid item key={anime.id} xs={6} sm={3} md={2}>
@@ -27,18 +38,19 @@ export default function Home() {
         </Grid>
       </Box>
 
-      {/* <Box py={2}>
+      <Box py={2}>
         <Typography variant="h5" mb={2}>
           Popular Animes
         </Typography>
+
         <Grid container spacing={2}>
-          {popAnimes?.map((anime) => (
+          {popAnimes.results.map((anime) => (
             <Grid item key={anime.id} xs={6} sm={3} md={2}>
               <Anime anime={anime} />
             </Grid>
           ))}
         </Grid>
-      </Box> */}
+      </Box>
     </Container>
   );
 }
