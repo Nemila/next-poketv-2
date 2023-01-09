@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Player from "../../../components/Player";
 import Episode from "../../../components/Episode";
 import { Box, Container, Stack, Typography } from "@mui/material";
@@ -8,8 +8,6 @@ import useSWR from "swr";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const StreamPage = () => {
-  const desc = useRef(null);
-
   const router = useRouter();
   const { episodeId, animeId } = router.query;
 
@@ -32,10 +30,6 @@ const StreamPage = () => {
     (episode) => episode.id === episodeId
   );
 
-  useEffect(() => {
-    if (desc && anime) desc.current.innerHTML = anime.description;
-  }, [desc, anime]);
-
   if (error || episodeErr) return <div>failed to load</div>;
   if (isLoading || episodeIsLoading) return <div>loading...</div>;
 
@@ -48,7 +42,7 @@ const StreamPage = () => {
           Epsiode {currentEpisode.number}: {currentEpisode.title}
         </Typography>
 
-        <Typography variant="body2" ref={desc}></Typography>
+        <Typography variant="body2">{anime.description}</Typography>
 
         <Stack spacing={1} mt={2}>
           <Typography variant="h6">All episodes</Typography>

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Episode from "../../components/Episode";
 import useSWR from "swr";
@@ -7,8 +7,6 @@ import useSWR from "swr";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const DetailPage = () => {
-  const desc = useRef(null);
-
   const router = useRouter();
   const { animeId } = router.query;
 
@@ -17,10 +15,6 @@ const DetailPage = () => {
     error,
     isLoading,
   } = useSWR(`https://api.consumet.org/meta/anilist/info/${animeId}`, fetcher);
-
-  useEffect(() => {
-    if (desc && anime) desc.current.innerHTML = anime.description;
-  }, [desc, anime]);
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
@@ -48,7 +42,7 @@ const DetailPage = () => {
             {anime.totalEpisodes}
           </Typography>
 
-          <Typography variant="body2" ref={desc}></Typography>
+          <Typography variant="body2">{anime.description}</Typography>
 
           <Stack spacing={1} mt={2}>
             <Typography variant="h6">All episodes</Typography>
